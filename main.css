@@ -1,6 +1,11 @@
 .rectwarning{
     fill: rgb(255,120,120);
 }
+
+.graphs{
+    display: inline-block;
+}
+
 .tooltip{
     position: absolute; /*podemos declarar estos estilos en otro sitio (o en el main o en un .css)*/
     pointer-events:none;
