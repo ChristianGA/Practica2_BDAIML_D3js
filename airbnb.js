@@ -106,6 +106,7 @@ function drawMaps(featureCollection) {
                 if(d.properties.avgprice>(a+priceScale)){
                     a+=priceScale;
                 } else {
+                    d.properties.color = arrayLegendColors[z];
                     return arrayLegendColors[z];
                 }
             }
@@ -180,6 +181,7 @@ function drawMaps(featureCollection) {
 
     var marginbottom = 100;
     var margintop = 50;
+    var colorArea = d.properties.color;
 
     //Borramos gráfico anterior
     d3.selectAll('#bars > *').remove();
@@ -213,14 +215,8 @@ function drawMaps(featureCollection) {
         .data(d.properties.avgbedrooms)
         .enter()
         .append('rect')
-        .attr("fill", "#93CAAE");
-
-    rect.attr('class', (d) => {
-        if (d.total > 10) {
-            return 'rectwarning';
-        }
-        //(d.value > 10) ? 'rectwarning':''; //El if statement de arriba "simplificado"
-    });
+        .attr("fill", colorArea) //coloreo los rectángulos con el color de la leyenda
+        .attr("opacity", 0.75);
 
     rect
         .attr("x", function(d) {
@@ -233,15 +229,12 @@ function drawMaps(featureCollection) {
         .attr("height", function() {
             return height - yscale(0); //Al cargarse los rectangulos tendran una altura de 0 
         }).on("mouseover", function() {
-            d3.select(this).attr("class", "").attr("fill", "yellow")
+            d3.select(this)
+                .attr("class", "")
+                .attr("fill", "yellow")
         })
         .on("mouseout", function() {
-            d3.select(this).attr("fill", "#93CAAE")
-                .attr('class', (d) => {
-                    if (d.total > 10) {
-                        return 'rectwarning';
-                    }
-                })
+            d3.select(this).attr("fill", colorArea)
         });
 
     rect
